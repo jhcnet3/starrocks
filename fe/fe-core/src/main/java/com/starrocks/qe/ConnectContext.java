@@ -70,6 +70,7 @@ import com.starrocks.server.GlobalStateMgr;
 import com.starrocks.server.MetadataMgr;
 import com.starrocks.server.RunMode;
 import com.starrocks.server.WarehouseManager;
+import com.starrocks.service.arrow.flight.sql.ArrowFlightSqlConnectContext;
 import com.starrocks.sql.analyzer.Authorizer;
 import com.starrocks.sql.analyzer.SemanticException;
 import com.starrocks.sql.ast.CleanTemporaryTableStmt;
@@ -793,7 +794,15 @@ public class ConnectContext {
         endTime = Instant.now();
     }
 
+<<<<<<< HEAD
     public void updateReturnRows(int returnRows) {
+=======
+    public Instant getEndTime() {
+        return endTime;
+    }
+
+    public void updateReturnRows(long returnRows) {
+>>>>>>> 27e56704c7 ([BugFix] Fix bugs of Arrow Flight SQL (#65889))
         this.returnRows += returnRows;
     }
 
@@ -855,6 +864,10 @@ public class ConnectContext {
 
     public void setState(QueryState state) {
         this.state = state;
+    }
+
+    public boolean isArrowFlightSql() {
+        return this instanceof ArrowFlightSqlConnectContext;
     }
 
     public String getNormalizedErrorCode() {
