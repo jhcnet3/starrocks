@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 -- name: test_array_sum_avg
+=======
+-- name: test_array_sum_avg @mac @no_arrow_flight_sql
+>>>>>>> 27e56704c7 ([BugFix] Fix bugs of Arrow Flight SQL (#65889))
 CREATE TABLE test_array_functions (
     id INT,
     array_boolean ARRAY<BOOLEAN>,

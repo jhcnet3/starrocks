@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 -- name: test_array_min_max_all_type
+=======
+-- name: test_array_min_max_all_type @mac @no_arrow_flight_sql
+>>>>>>> 27e56704c7 ([BugFix] Fix bugs of Arrow Flight SQL (#65889))
 
 CREATE TABLE test_array_min_max (
     id INT,

@@ -69,17 +69,37 @@ public class SimpleExecutor {
     }
 
     public void executeDML(String sql) {
+        executeDMLOrControl(sql, SqlType.DML);
+    }
+
+    public void executeControl(String sql) {
+        executeDMLOrControl(sql, SqlType.CONTROL);
+    }
+
+    private void executeDMLOrControl(String sql, SqlType type) {
         ConnectContext prev = ConnectContext.get();
         try {
             ConnectContext context = createConnectContext();
             StatementBase parsedStmt = SqlParser.parseOneWithStarRocksDialect(sql, context.getSessionVariable());
+<<<<<<< HEAD
             Preconditions.checkState(parsedStmt instanceof DmlStmt, "the statement should be dml");
+=======
+            sql = formatSQL(sql, parsedStmt);
+            if (type == SqlType.DML) {
+                Preconditions.checkState(parsedStmt instanceof DmlStmt, "the statement should be DML statement");
+            }
+>>>>>>> 27e56704c7 ([BugFix] Fix bugs of Arrow Flight SQL (#65889))
             StmtExecutor executor = StmtExecutor.newInternalExecutor(context, parsedStmt);
             context.setExecutor(executor);
             context.setQueryId(UUIDUtil.genUUID());
             context.getSessionVariable().setPipelineDop(dop);
+<<<<<<< HEAD
             AuditLog.getInternalAudit().info(name + " execute SQL | Query_id {} | SQL {}",
                     DebugUtil.printId(context.getQueryId()), sql);
+=======
+            AuditLog.getInternalAudit().info("{} execute SQL | Query_id {} | {} {}",
+                    name, DebugUtil.printId(context.getQueryId()), type.name(), sql);
+>>>>>>> 27e56704c7 ([BugFix] Fix bugs of Arrow Flight SQL (#65889))
             executor.execute();
         } catch (Exception e) {
             LOG.error(name + " execute SQL {} failed: {}", sql, e.getMessage(), e);
@@ -144,5 +164,10 @@ public class SimpleExecutor {
         context.setThreadLocalInfo();
         context.setNeedQueued(false);
         return context;
+    }
+
+    private enum SqlType {
+        DML,
+        CONTROL
     }
 }
